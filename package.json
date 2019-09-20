@@ -1,0 +1,35 @@
+{
+  "name": "minify-project",
+  "version": "1.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "fs-extra",
+    "globby",
+    "concat",
+    "clean-css",
+    "autoprefixer",
+    "postcss",
+    "uglify-es",
+    "uglifyjs",
+    "minify",
+    "minify-css",
+    "minify-js",
+    "minify-all"
+  ],
+  "author": "midnightgamer",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^9.6.1",
+    "clean-css": "^4.2.1",
+    "concat": "^1.0.3",
+    "fs-extra": "^8.1.0",
+    "globby": "^10.0.1",
+    "postcss": "^7.0.18",
+    "uglify-es": "^3.3.9"
+  },
+  "dependencies": {}
+}
