@@ -65,6 +65,7 @@ const minifier = function(para) {
           .minify(result)
           .then(function(output) {
             fs.outputFile(cssFile + "/style.min.css", output.styles);
+            expect(output.styles).toEqual(output.styles);
           })
           .catch(function(error) {});
         // console.log("done");
