@@ -6,7 +6,7 @@ const autoprefixer = require("autoprefixer");
 const postcss = require("postcss");
 const UglifyJS = require("uglify-es");
 
-export const minifier = function(para) {
+module.export = minifier = function(para) {
   let cssPath, jsPath, ignorePaths, prefixEnabled, destinationPath, inter;
   if (para.destination) {
     destinationPath = para.destination;
