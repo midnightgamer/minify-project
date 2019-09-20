@@ -22,7 +22,7 @@
   ],
   "author": "midnightgamer",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
     "autoprefixer": "^9.6.1",
     "clean-css": "^4.2.1",
     "concat": "^1.0.3",
@@ -32,5 +32,5 @@
     "postcss": "^7.0.18",
     "uglify-es": "^3.3.9"
   },
-  "dependencies": {}
+  "devDependencies": {}
 }
