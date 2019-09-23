@@ -6,8 +6,9 @@ const autoprefixer = require("autoprefixer");
 const postcss = require("postcss");
 const UglifyJS = require("uglify-es");
 
-module.export = minifier = function(para) {
+module.exports.minifier = function(para) {
   let cssPath, jsPath, ignorePaths, prefixEnabled, destinationPath, inter;
+  prefixEnabled = false;
   if (para.destination) {
     destinationPath = para.destination;
     console.log(
@@ -54,7 +55,12 @@ module.export = minifier = function(para) {
   if (para.destination) {
     destinationPath = para.destination;
   }
-  if (cssPath && !para.prefixEnabled) {
+  //Only css minification
+  if (cssPath && !para.prefixEnabled && !jsPath) {
+    console.log(
+      "\u001b[34m",
+      "Minifying your css in " + destinationPath + "with disbaled prefix" + ""
+    );
     inter = setInterval(() => {
       console.log("\u001b[34m", "Minifying your css files....");
     }, 10);
@@ -77,8 +83,9 @@ module.export = minifier = function(para) {
       });
     });
   }
-
-  if (jsPath) {
+  //Only js Minification
+  if (jsPath && !cssPath) {
+    console.log("\u001b[34m", "Minifying your js in " + destinationPath + "");
     inter = setInterval(() => {
       console.log("\u001b[34m", "Minifying your js files....");
     }, 10);
@@ -95,7 +102,13 @@ module.export = minifier = function(para) {
       "Your all files has been concatenated and minfied \nHappy Hacking"
     );
   }
+
+  //CSS with Prefixed value
   if (cssPath && para.prefixEnabled) {
+    console.log(
+      "\u001b[34m",
+      "Minifying your css in " + destinationPath + "with enabled prefix" + ""
+    );
     inter = setInterval(() => {
       console.log("\u001b[34m", "Minifying your js files....");
     }, 10);
@@ -121,5 +134,61 @@ module.export = minifier = function(para) {
         })
         .catch();
     });
+  } else if (jsPath && cssPath && para.prefixEnabled) {
+    console.log(
+      "\u001b[34m",
+      "Minifying your css and js in " +
+        destinationPath +
+        "with enabled prefix" +
+        ""
+    );
+    globby([cssPath + "/*.css", "!node_modules"]).then(paths => {
+      concat(paths).then(result => {
+        postcss([autoprefixer])
+          .process(result, { map: { inline: false } })
+          .then(preFixed => {
+            preFixed.warnings().forEach(warn => {
+              console.warn(warn.toString());
+            });
+            fs.outputFile(cssFile + "/style.css", preFixed.css);
+            var minifedCSS = new CleanCSS().minify(preFixed.css);
+            fs.outputFile(cssFile + "/style.min.css", minifedCSS.styles);
+          });
+      });
+    });
+    globby([jsPath + "/*.js", "!node_modules"]).then(paths => {
+      concat(paths).then(result => {
+        fs.outputFile(jsFile + "/script.js", result);
+        var minfifiedJs = UglifyJS.minify(result);
+        fs.outputFile(jsFile + "/script.min.js", minfifiedJs.code);
+      });
+    });
+  } else if (jsPath && cssPath && !para.prefixEnabled) {
+    console.log(
+      "\u001b[34m",
+      "Minifying your css and js in " +
+        destinationPath +
+        "with  disabled prefix" +
+        ""
+    );
+    globby([cssPath + "/*.css", "!node_modules"]).then(paths => {
+      concat(paths).then(result => {
+        fs.outputFile(cssFile + "/style.css", result);
+        new CleanCSS({ returnPromise: true, inline: ["remote"] })
+          .minify(result)
+          .then(function(output) {
+            fs.outputFile(cssFile + "/style.min.css", output.styles);
+            expect(output.styles).toEqual(output.styles);
+          });
+      });
+    });
   }
+  globby([jsPath + "/*.js", "!node_modules"]).then(paths => {
+    concat(paths).then(result => {
+      fs.outputFile(jsFile + "/script.js", result);
+      var minfifiedJs = UglifyJS.minify(result);
+      fs.outputFile(jsFile + "/script.min.js", minfifiedJs.code);
+    });
+  });
+  return 1;
 };

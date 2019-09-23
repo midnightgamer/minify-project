@@ -32,5 +32,9 @@
     "postcss": "^7.0.18",
     "uglify-es": "^3.3.9"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "bugs": {
+    "url": "https://github.com/midnightgamer/minify-project/issues"
+  },
+  "homepage": "https://github.com/midnightgamer/minify-project#readme"
 }
